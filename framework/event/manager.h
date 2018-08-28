@@ -56,8 +56,6 @@ class HandlerInfo {
 
 class EventManager {
  public:
-  enum Return { kSucc = 0, kFail = -1 };
-
   static const int kMaxEventCount = 1024;
   static const int kMaxHandlerCount = 512;
   static const int kStdEventCount = 3;  // 3 is for std in,out,err
@@ -65,7 +63,7 @@ class EventManager {
  private:
   int epoll_fd_;
   int handler_count_;
-  int handler_last_id_;
+  int handler_next_id_;
 
   std::map<std::string, int> handler_map_;
   std::unique_ptr<HandlerInfo> handler_infos_[kMaxHandlerCount];
@@ -75,23 +73,21 @@ class EventManager {
   ~EventManager();
 
  public:
-  static EventManager* GetInstance();
-
-  int Init();
-  int Run();
+  static EventManager* GetManager();
+  bool Run();
 
   int GetHandlerId(std::string handler_name);
-  int AddHandler(std::string handler_name, EventHandler* handler);
+  bool AddHandler(std::string handler_name, EventHandler* handler);
   int DelHandler(std::string handler_name);
 
   int GetEventId(std::string handler_name, std::string event_name);
-  int AddEvent(std::string handler_name, Event* event);
-  int DelEvent(std::string handler_name, std::string event_name);
+  bool AddEvent(std::string handler_name, Event* event);
+  bool DelEvent(std::string handler_name, std::string event_name);
 
-  int SendKnock(std::string handler_name, std::string knock_event_name);
-  int PushObj(std::string handler_name, HandlerObj* obj);
-  int PushObj(std::string handler_name, std::string queue_name,
-              HandlerObj* obj);
+  bool SendKnock(std::string handler_name, std::string knock_event_name);
+  bool PushObj(std::string handler_name, HandlerObj* obj);
+  bool PushObj(std::string handler_name, std::string queue_name,
+               HandlerObj* obj);
 };
 
 #endif  // MANAGER_H_

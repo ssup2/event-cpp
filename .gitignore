@@ -39,3 +39,6 @@ build
 # ctags stuff
 .tags*
 tags
+
+# YCM
+.ycm_extra_conf.py

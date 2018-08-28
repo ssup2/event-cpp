@@ -1,3 +1,4 @@
+#include <chrono>
 #include <ctime>
 #include <iomanip>
 #include <iostream>
@@ -5,8 +6,9 @@
 
 #include "logger.h"
 
-std::string Logger::log_path_;
-Logger::Level Logger::log_level_;
+// Set Default log path and log level.
+std::string Logger::log_path_ = "./log.txt";
+Logger::Level Logger::log_level_ = Logger::kInfo;
 
 const std::string Logger::kLogDebug = "Debg";
 const std::string Logger::kLogInfo = "Info";
@@ -15,11 +17,16 @@ const std::string Logger::kLogError = "Erro";
 const std::string Logger::kLogCrit = "Crit";
 
 std::string Logger::GetDateTime() {
-  auto t = std::time(nullptr);
-  auto tm = *std::localtime(&t);
+  using namespace std::chrono;
+
+  auto now = system_clock::now();
+  auto ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
+  auto timer = system_clock::to_time_t(now);
+  auto bt = *std::localtime(&timer);
 
   std::ostringstream oss;
-  oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+  oss << std::put_time(&bt, "%Y-%m-%d %H:%M:%S");
+  oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
   return oss.str();
 }
 

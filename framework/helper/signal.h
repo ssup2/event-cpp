@@ -2,23 +2,26 @@
 #define SIGNAL_H_
 
 #include <csignal>
+#include <memory>
 
 #include <event/event.h>
 #include <sys/signalfd.h>
 
 class Signal {
  public:
-  Signal();
+  Signal(std::string event_name);
   ~Signal();
 
-  Event* GetEvent(std::string event_name);
+  Event* GetEvent();
 
-  int AddSignal(int signal);
-  int SetSignal();
-
+  bool AddSignal(int signal);
+  bool SetSignal();
   int GetSignal();
 
  private:
+  std::unique_ptr<Event> event_;
+  std::string event_name_;
+
   int signal_fd_;
   sigset_t mask_;
 };

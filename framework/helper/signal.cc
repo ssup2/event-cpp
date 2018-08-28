@@ -2,26 +2,29 @@
 
 #include "signal.h"
 
-Signal::Signal() { sigemptyset(&mask_); }
+Signal::Signal(std::string event_name) {
+  sigemptyset(&mask_);
+
+  event_name_ = event_name;
+  event_.reset(new Event(signal_fd_, event_name));
+}
 
 Signal::~Signal() {}
 
-Event* Signal::GetEvent(std::string event_name) {
-  return new Event(signal_fd_, event_name);
-}
+Event* Signal::GetEvent() { return event_.get(); }
 
-int Signal::AddSignal(int signal) {
+bool Signal::AddSignal(int signal) {
   sigaddset(&mask_, signal);
-  if (sigprocmask(SIG_BLOCK, &mask_, nullptr) == -1) return -1;
+  if (sigprocmask(SIG_BLOCK, &mask_, nullptr) == -1) return false;
 
-  return 0;
+  return true;
 }
 
-int Signal::SetSignal() {
+bool Signal::SetSignal() {
   signal_fd_ = signalfd(-1, &mask_, 0);
-  if (signal_fd_ == -1) return -1;
+  if (signal_fd_ == -1) return false;
 
-  return 0;
+  return true;
 }
 
 int Signal::GetSignal() {

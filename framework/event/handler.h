@@ -48,13 +48,10 @@ class HandlerContext {
 
 class EventHandler {
  public:
-  enum Return { kSucc = 0, kFail = -1 };
+  virtual ~EventHandler() {}
 
- public:
-  virtual ~EventHandler() = 0;
-
-  virtual int Init(HandlerContext* context) = 0;
-  virtual int Handler(HandlerContext* context, Event* event) = 0;
+  virtual bool Init(HandlerContext* context) = 0;
+  virtual bool Handler(HandlerContext* context, Event* event) = 0;
 };
 
 #endif  // HANDLER_H_

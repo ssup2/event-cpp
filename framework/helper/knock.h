@@ -2,21 +2,25 @@
 #define KNOCK_H_
 
 #include <event/event.h>
+#include <memory>
 
 class Knock {
  public:
   enum Mode { kNormal, kAggre };
 
  public:
-  Knock(Mode mode);
+  Knock(std::string event_name, Mode mode);
   ~Knock();
 
-  Event* GetEvent(std::string event_name);
+  Event* GetEvent();
 
-  int Send();
-  int Clear();
+  bool Send();
+  bool Clear();
 
  private:
+  std::unique_ptr<Event> event_;
+  std::string event_name_;
+
   int event_fd_;
 };
 
