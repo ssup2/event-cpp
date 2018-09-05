@@ -85,9 +85,8 @@ class EventManager {
   bool DelEvent(std::string handler_name, std::string event_name);
 
   bool SendKnock(std::string handler_name, std::string knock_event_name);
-  bool PushObj(std::string handler_name, HandlerObj* obj);
-  bool PushObj(std::string handler_name, std::string queue_name,
-               HandlerObj* obj);
+  bool PushData(std::string handler_name, std::string queue_name, void* data);
+  bool PushData(std::string handler_name, void* data);
 };
 
 #endif  // MANAGER_H_

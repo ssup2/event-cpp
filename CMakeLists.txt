@@ -58,12 +58,15 @@ add_custom_command(OUTPUT framework_header
 # - Build example binary -
 add_custom_target(example
 	DEPENDS example_timer
+	DEPENDS example_signal
+	DEPENDS example_knock
 	)
 
 ## -- Timer --
 add_executable (example_timer
 	examples/timer/main.cc
 	examples/timer/handler_timer1.cc
+	examples/timer/handler_timer2.cc
     )  
 
 target_link_libraries(example_timer
@@ -74,3 +77,47 @@ set_target_properties(example_timer PROPERTIES
 	OUTPUT_NAME "timer"
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)	
 
+## -- Signal --
+add_executable (example_signal
+	examples/signal/main.cc
+	examples/signal/handler_signal1.cc
+	examples/signal/handler_signal2.cc
+    )  
+
+target_link_libraries(example_signal
+	framework_lib
+	)
+
+set_target_properties(example_signal PROPERTIES 
+	OUTPUT_NAME "signal"
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)	
+
+## -- Knock --
+add_executable (example_knock
+	examples/knock/main.cc
+	examples/knock/handler_timer1.cc
+	examples/knock/handler_knock1.cc
+    )  
+
+target_link_libraries(example_knock
+	framework_lib
+	)
+
+set_target_properties(example_knock PROPERTIES 
+	OUTPUT_NAME "knock"
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)	
+
+## -- Handler Queue --
+add_executable (example_handler_queue
+	examples/handler_queue/main.cc
+	examples/handler_queue/handler_timer1.cc
+	examples/handler_queue/handler_knock1.cc
+    )  
+
+target_link_libraries(example_handler_queue
+	framework_lib
+	)
+
+set_target_properties(example_handler_queue PROPERTIES 
+	OUTPUT_NAME "handler_queue"
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)	

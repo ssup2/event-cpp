@@ -7,12 +7,6 @@
 
 #include "event.h"
 
-class HandlerObj {
- public:
-  HandlerObj() {}
-  virtual ~HandlerObj() = 0;
-};
-
 class HandlerContext {
  public:
   static std::string kDefaultQueueName;
@@ -21,7 +15,7 @@ class HandlerContext {
   int handler_id_;
   std::string handler_name_;
 
-  std::map<std::string, std::list<std::unique_ptr<HandlerObj>>> obj_queues_;
+  std::map<std::string, std::list<void*>> data_queues_;
 
  public:
   HandlerContext(int handler_id, std::string handler_name);
@@ -39,11 +33,11 @@ class HandlerContext {
   void ClearQueue(std::string queue_name);
   void ClearQueue();
 
-  void PushQueue(std::string queue_name, std::unique_ptr<HandlerObj> obj);
-  void PushQueue(std::unique_ptr<HandlerObj> obj);
+  void PushQueue(std::string queue_name, void* data);
+  void PushQueue(void* data);
 
-  std::unique_ptr<HandlerObj> PopQueue(std::string queue_name);
-  std::unique_ptr<HandlerObj> PopQueue();
+  void* PopQueue(std::string queue_name);
+  void* PopQueue();
 };
 
 class EventHandler {

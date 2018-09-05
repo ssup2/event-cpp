@@ -6,7 +6,7 @@ Signal::Signal(std::string event_name) {
   sigemptyset(&mask_);
 
   event_name_ = event_name;
-  event_.reset(new Event(signal_fd_, event_name));
+  event_.release();
 }
 
 Signal::~Signal() {}
@@ -24,6 +24,7 @@ bool Signal::SetSignal() {
   signal_fd_ = signalfd(-1, &mask_, 0);
   if (signal_fd_ == -1) return false;
 
+  event_.reset(new Event(signal_fd_, event_name_));
   return true;
 }
 

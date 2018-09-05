@@ -1,16 +1,16 @@
 #include <event/manager.h>
 #include <iostream>
 
+#include "handler_knock1.h"
 #include "handler_timer1.h"
-#include "handler_timer2.h"
 
 int main() {
   EventManager* mgr = EventManager::GetManager();
 
   HandlerTimer1* handler_timer1 = new HandlerTimer1();
   mgr->AddHandler("handler_timer1", handler_timer1);
-  HandlerTimer2* handler_timer2 = new HandlerTimer2();
-  mgr->AddHandler("handler_timer2", handler_timer2);
+  HandlerKnock1* handler_knock1 = new HandlerKnock1();
+  mgr->AddHandler("handler_knock1", handler_knock1);
 
   mgr->Run();
 

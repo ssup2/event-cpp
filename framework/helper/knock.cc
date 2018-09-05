@@ -7,9 +7,9 @@
 
 Knock::Knock(std::string event_name, Mode mode) {
   if (mode == kAggre) {
-    event_fd_ = eventfd(0, EFD_SEMAPHORE);
-  } else {
     event_fd_ = eventfd(0, 0);
+  } else {
+    event_fd_ = eventfd(0, EFD_SEMAPHORE);
   }
 
   event_name_ = event_name;

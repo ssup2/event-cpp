@@ -218,8 +218,8 @@ bool EventManager::SendKnock(std::string handler_name,
   return true;
 }
 
-bool EventManager::PushObj(std::string handler_name, std::string queue_name,
-                           HandlerObj* obj) {
+bool EventManager::PushData(std::string handler_name, std::string queue_name,
+                            void* data) {
   std::string log_name = handler_name + " - " + queue_name;
 
   int handler_id;
@@ -229,11 +229,10 @@ bool EventManager::PushObj(std::string handler_name, std::string queue_name,
   }
 
   // Push object
-  handler_infos_[handler_id]->GetContext()->PushQueue(
-      queue_name, std::unique_ptr<HandlerObj>(obj));
+  handler_infos_[handler_id]->GetContext()->PushQueue(queue_name, data);
   return true;
 }
 
-bool EventManager::PushObj(std::string handler_name, HandlerObj* obj) {
-  return PushObj(handler_name, HandlerContext::kDefaultQueueName, obj);
+bool EventManager::PushData(std::string handler_name, void* data) {
+  return PushData(handler_name, HandlerContext::kDefaultQueueName, data);
 }
