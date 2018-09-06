@@ -60,6 +60,8 @@ add_custom_target(example
 	DEPENDS example_timer
 	DEPENDS example_signal
 	DEPENDS example_knock
+	DEPENDS example_handler_queue
+	DEPENDS example_tcp_conn
 	)
 
 ## -- Timer --
@@ -121,3 +123,18 @@ target_link_libraries(example_handler_queue
 set_target_properties(example_handler_queue PROPERTIES 
 	OUTPUT_NAME "handler_queue"
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)	
+
+## -- TcpConn --
+add_executable (example_tcp_conn
+	examples/tcp_conn/main.cc
+	examples/tcp_conn/handler_timer1.cc
+    )  
+
+target_link_libraries(example_tcp_conn
+	framework_lib
+	)
+
+set_target_properties(example_tcp_conn PROPERTIES 
+	OUTPUT_NAME "tcp_conn"
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)	
+
