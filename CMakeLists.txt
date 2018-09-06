@@ -13,8 +13,14 @@ set(VERSION_MINOR 5)
 ## -- Setting --
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-limit-debug-info -g -Wall")
 
-## - Include -
+## -- Include --
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/framework) 
+
+# - Build all -
+add_custom_target(all
+    DEPENDS framework
+    DEPENDS example
+    )
 
 # - Build framework and copy it's headers -
 add_custom_target(framework
@@ -22,7 +28,7 @@ add_custom_target(framework
     DEPENDS framework_header
     )
 
-## - Build framework library -
+## -- Build framework library --
 add_library(framework_lib STATIC
     EXCLUDE_FROM_ALL
 	framework/common/read_write.cc
@@ -40,7 +46,7 @@ set_target_properties(framework_lib PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/framework/lib
 	)	
 
-## - Copy framework's headers -
+## -- Copy framework's headers --
 add_custom_command(OUTPUT framework_header
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/framework/header/event
     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/event/event.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/event
@@ -49,7 +55,7 @@ add_custom_command(OUTPUT framework_header
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/framework/header/helper
     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/helper/knock.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/helper
     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/helper/signal.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/helper
-    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/helper/socket.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/helper
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/helper/tcp_conn.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/helper
     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/helper/timer.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/helper
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/framework/header/logger
     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/framework/logger/logger.h ${CMAKE_CURRENT_BINARY_DIR}/framework/header/logger
