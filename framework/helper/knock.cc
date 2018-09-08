@@ -13,7 +13,7 @@ Knock::Knock(std::string event_name, Mode mode) {
   }
 
   event_name_ = event_name;
-  event_.reset(new Event(event_fd_, event_name));
+  event_.reset(new Event(event_fd_, event_name, Event::Type::kKnock));
 }
 
 Knock::~Knock() { close(event_fd_); }

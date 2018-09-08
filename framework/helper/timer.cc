@@ -12,7 +12,7 @@ Timer::Timer(std::string event_name) {
   if (timer_fd_ == -1) return;
 
   event_name_ = event_name;
-  event_.reset(new Event(timer_fd_, event_name));
+  event_.reset(new Event(timer_fd_, event_name, Event::Type::kTimer));
 }
 
 Timer::~Timer() {

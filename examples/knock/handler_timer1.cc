@@ -29,6 +29,8 @@ bool HandlerTimer1::Handler(HandlerContext* context, Event* event) {
 
     mgr->SendKnock("handler_knock1", "knock_aggre");
     mgr->SendKnock("handler_knock1", "knock_aggre");
+
+    mgr->SendAllKnock("knock_all");
   } else {
     Logger(Logger::kInfo) << "wrong event";
   }

@@ -68,6 +68,7 @@ class EventManager {
   std::map<std::string, int> handler_map_;
   std::unique_ptr<HandlerInfo> handler_infos_[kMaxHandlerCount];
   std::unique_ptr<EventInfo> event_infos_[kMaxEventCount + kStdEventCount];
+  std::map<std::string, std::list<int>> knock_map_;
 
   EventManager();
   ~EventManager();
@@ -85,6 +86,7 @@ class EventManager {
   bool DelEvent(std::string handler_name, std::string event_name);
 
   bool SendKnock(std::string handler_name, std::string knock_event_name);
+  bool SendAllKnock(std::string knock_event_name);
   bool PushData(std::string handler_name, std::string queue_name, void* data);
   bool PushData(std::string handler_name, void* data);
 };

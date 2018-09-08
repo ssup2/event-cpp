@@ -24,7 +24,7 @@ bool Signal::SetSignal() {
   signal_fd_ = signalfd(-1, &mask_, SFD_NONBLOCK);
   if (signal_fd_ == -1) return false;
 
-  event_.reset(new Event(signal_fd_, event_name_));
+  event_.reset(new Event(signal_fd_, event_name_, Event::Type::kSignal));
   return true;
 }
 

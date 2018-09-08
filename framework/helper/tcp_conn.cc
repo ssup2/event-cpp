@@ -52,7 +52,7 @@ bool TcpConn::Connect() {
     return false;
   }
 
-  event_.reset(new Event(socket_fd_, event_name_));
+  event_.reset(new Event(socket_fd_, event_name_, Event::Type::kTcpConn));
   return true;
 }
 

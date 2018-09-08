@@ -105,6 +105,7 @@ add_executable (example_knock
 	examples/knock/main.cc
 	examples/knock/handler_timer1.cc
 	examples/knock/handler_knock1.cc
+	examples/knock/handler_knock2.cc
     )  
 
 target_link_libraries(example_knock

@@ -168,6 +168,12 @@ bool EventManager::AddEvent(std::string handler_name, Event* event) {
   // Set infos
   event_infos_[event->GetId()].reset(new EventInfo(handler_id, event));
   handler_infos_[handler_id]->SetEventId(event->GetName(), event->GetId());
+
+  // If event type is knock, Regist it to knock_map_ to broadcast knock.
+  if (event->GetType() == Event::Type::kKnock) {
+    knock_map_[event->GetName()].push_back(event->GetId());
+  }
+
   return true;
 }
 
@@ -187,12 +193,18 @@ bool EventManager::DelEvent(std::string handler_name, std::string event_name) {
     return false;
   }
 
-  // Delete event from epoll
-  epoll_ctl(epoll_fd_, EPOLL_CTL_DEL, event_id, nullptr);
+  // If event type is knock, Remove it from knock_map_.
+  int event_type = event_infos_[event_id]->GetEvent()->GetType();
+  if (event_type == Event::Type::kKnock) {
+    knock_map_[event_name].remove(event_id);
+  }
 
   // Unset infos
   event_infos_[event_id].release();
   handler_infos_[handler_id]->UnsetEventId(event_name);
+
+  // Delete event from epoll
+  epoll_ctl(epoll_fd_, EPOLL_CTL_DEL, event_id, nullptr);
   return true;
 }
 
@@ -213,7 +225,24 @@ bool EventManager::SendKnock(std::string handler_name,
   }
 
   // Write to eventfd
-  if (eventfd_write(event_id, 1) != 0) return false;
+  if (eventfd_write(event_id, 1) != 0) {
+    Logger(Logger::kWarn) << "EventManager - Send knock failed - " << log_name;
+    return false;
+  }
+
+  return true;
+}
+
+bool EventManager::SendAllKnock(std::string knock_event_name) {
+  auto id_list = knock_map_[knock_event_name];
+  for (auto iter = id_list.begin(); iter != id_list.end(); iter++) {
+    // Write to eventfd
+    if (eventfd_write(*iter, 1) != 0) {
+      Logger(Logger::kWarn)
+          << "EventManager - Send all knock failed - " << knock_event_name;
+      return false;
+    }
+  }
 
   return true;
 }

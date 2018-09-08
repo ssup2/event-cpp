@@ -2,9 +2,9 @@
 #include <event/manager.h>
 #include <logger/logger.h>
 
-#include "handler_knock1.h"
+#include "handler_knock2.h"
 
-bool HandlerKnock1::Init(HandlerContext* context) {
+bool HandlerKnock2::Init(HandlerContext* context) {
   EventManager* mgr = EventManager::GetManager();
   std::string handler_name = context->GetHandlerName();
 
@@ -20,7 +20,7 @@ bool HandlerKnock1::Init(HandlerContext* context) {
   return true;
 }
 
-bool HandlerKnock1::Handler(HandlerContext* context, Event* event) {
+bool HandlerKnock2::Handler(HandlerContext* context, Event* event) {
   (void)context;
   (void)event;
 
