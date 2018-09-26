@@ -22,11 +22,13 @@ std::string Logger::GetDateTime() {
   auto now = system_clock::now();
   auto ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
   auto timer = system_clock::to_time_t(now);
-  auto bt = *std::localtime(&timer);
+  auto tp = *std::localtime(&timer);
+
+  char date[sizeof("2018-01-01 12:00:00")];
+  std::strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", &tp);
 
   std::ostringstream oss;
-  oss << std::put_time(&bt, "%Y-%m-%d %H:%M:%S");
-  oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
+  oss << date << '.' << std::setfill('0') << std::setw(3) << ms.count();
   return oss.str();
 }
 
