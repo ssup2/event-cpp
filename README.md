@@ -1,4 +1,4 @@
-# event-cpp
+# event-cpp [![Build Status](https://travis-ci.org/ssup2/event-cpp.svg?branch=master)](https://travis-ci.org/ssup2/event-cpp)
 
 ## Build and run
 
