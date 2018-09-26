@@ -16,14 +16,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-limit-debug-info -g -Wal
 ## -- Include --
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/framework) 
 
-# - Build all -
-add_custom_target(all
-    DEPENDS framework
-    DEPENDS example
-    )
-
 # - Build framework and copy it's headers -
-add_custom_target(framework
+add_custom_target(framework ALL
     DEPENDS framework_lib
     DEPENDS framework_header
     )
@@ -62,7 +56,7 @@ add_custom_command(OUTPUT framework_header
     ) 
 
 # - Build example binary -
-add_custom_target(example
+add_custom_target(example ALL
 	DEPENDS example_timer
 	DEPENDS example_signal
 	DEPENDS example_knock
